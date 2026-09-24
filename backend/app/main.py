@@ -283,10 +283,11 @@ table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;
   </div>
   <div class="card" style="margin-top:18px">
     <h2>Ingest Security Event</h2>
+    <p class="muted">Analyze a security event against an IP address or a URL/domain.</p>
     <form onsubmit="sendEvent(event)">
-      <div class="row"><input id="ip" placeholder="Source IP" value="192.0.2.10"><input id="type" placeholder="Event type" value="authentication"></div>
+      <div class="row"><input id="ip" placeholder="Target IP or URL (e.g. 192.0.2.10 or https://example.com)" value="192.0.2.10" required><input id="type" placeholder="Event type" value="authentication"></div>
       <div class="row"><input id="status" placeholder="Status" value="failed"><input id="action" placeholder="Action" value="login"></div>
-      <p><input id="message" placeholder="Message"></p><button>Analyze Event</button>
+      <p><input id="message" placeholder="Message / request details / suspicious URL path"></p><button>Analyze Event</button>
     </form>
   </div>
   <div class="card" style="margin-top:18px"><h2>Alert Queue</h2><table><thead><tr><th>Severity</th><th>Category</th><th>Title</th><th>Source</th><th>Status</th><th>Action</th></tr></thead><tbody id="alerts"></tbody></table></div>
@@ -302,7 +303,8 @@ async function login(e){e.preventDefault();$('err').textContent='';try{let r=awa
 function logout(){localStorage.removeItem('soc_token');location.reload()}
 async function refresh(){try{let d=await api('/api/dashboard');$('events').textContent=d.events;$('open').textContent=d.open_alerts;$('critical').textContent=d.critical;$('high').textContent=d.high;let a=await api('/api/alerts');$('alerts').innerHTML=a.map(x=>'<tr><td>'+x.severity+'</td><td>'+x.category+'</td><td>'+x.title+'</td><td>'+x.source_ip+'</td><td>'+x.status+'</td><td><button onclick="closeAlert('+x.id+')">Resolve</button></td></tr>').join('')}catch(e){localStorage.removeItem('soc_token');location.reload()}}
 async function closeAlert(id){await api('/api/alerts/'+id+'/status',{method:'POST',body:JSON.stringify({status:'resolved'})});refresh()}
-async function sendEvent(e){e.preventDefault();let d=await api('/api/events',{method:'POST',body:JSON.stringify({source_ip:$('ip').value,event_type:$('type').value,status:$('status').value,action:$('action').value,message:$('message').value})});alert(d.detected?'Threat detected and alert created.':'Event ingested.');refresh()}
+function targetKind(v){return /^(https?:\\/\\/|www\\.)/i.test(v)?'url':'ip_or_host'}
+async function sendEvent(e){e.preventDefault();let target=$('ip').value.trim();if(!target){$('ip').focus();return}let d=await api('/api/events',{method:'POST',body:JSON.stringify({source_ip:target,event_type:$('type').value,status:$('status').value,action:$('action').value,message:$('message').value+' [target_type:'+targetKind(target)+']'})});alert(d.detected?'Threat detected and alert created.':'Event ingested.');refresh()}
 if(tok)show();
 </script>
 </body>
