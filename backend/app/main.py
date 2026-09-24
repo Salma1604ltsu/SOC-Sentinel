@@ -199,6 +199,25 @@ input:focus{border-color:#36c9ef;box-shadow:0 0 0 3px rgba(54,201,239,.11)}
 .err{min-height:18px;color:#ff7182;font-size:12px;margin:12px 0 0;text-align:center}
 .demo{margin-top:20px;padding:14px;border:1px solid #20384f;background:#081522;border-radius:12px;font-size:12px;color:#8198ae;line-height:1.6}
 .demo strong{color:#dce9f5}.demo button{margin-top:9px;width:100%;background:#102438;color:#9bdff0;border:1px solid #254c66;border-radius:9px;padding:9px;cursor:pointer;font-weight:700}
+
+.cyber-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;background:#030913}
+.cyber-grid{position:absolute;inset:-30%;background-image:linear-gradient(rgba(54,213,242,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(99,117,255,.075) 1px,transparent 1px);background-size:55px 55px;transform:perspective(500px) rotateX(58deg) translateY(15%);transform-origin:center;animation:gridMove 16s linear infinite}
+@keyframes gridMove{0%{transform:perspective(500px) rotateX(58deg) translateY(0)}100%{transform:perspective(500px) rotateX(58deg) translateY(55px)}}
+.orb{position:absolute;border-radius:50%;filter:blur(1px);opacity:.38;animation:float 9s ease-in-out infinite}
+.orb.one{width:280px;height:280px;left:8%;top:12%;background:radial-gradient(circle,rgba(34,211,238,.32),transparent 68%)}
+.orb.two{width:360px;height:360px;right:4%;bottom:5%;background:radial-gradient(circle,rgba(99,102,241,.28),transparent 68%);animation-delay:-3s}
+.orb.three{width:180px;height:180px;right:28%;top:10%;background:radial-gradient(circle,rgba(56,189,248,.18),transparent 68%);animation-delay:-6s}
+@keyframes float{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-24px,0) scale(1.06)}}
+.scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(94,231,255,.35),transparent);box-shadow:0 0 18px rgba(94,231,255,.25);animation:scan 6s linear infinite}
+@keyframes scan{0%{top:-5%}100%{top:105%}}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:#62e7ff;box-shadow:0 0 10px #62e7ff;animation:drift linear infinite}
+.p1{left:12%;top:70%;animation-duration:11s}.p2{left:27%;top:30%;animation-duration:14s;animation-delay:-4s}.p3{left:72%;top:65%;animation-duration:12s;animation-delay:-7s}.p4{left:86%;top:22%;animation-duration:15s;animation-delay:-2s}.p5{left:55%;top:80%;animation-duration:13s;animation-delay:-5s}
+@keyframes drift{0%{transform:translateY(35px);opacity:0}20%{opacity:.8}80%{opacity:.8}100%{transform:translateY(-180px);opacity:0}}
+.login-wrap{position:relative;z-index:1}
+.login-card{background:rgba(6,17,30,.78);backdrop-filter:blur(18px);box-shadow:0 0 0 1px rgba(94,231,255,.08),0 30px 100px rgba(0,0,0,.55),0 0 55px rgba(54,213,242,.08)}
+.cyber-tag{display:inline-flex;align-items:center;gap:7px;margin-bottom:16px;padding:6px 10px;border:1px solid #23485f;border-radius:999px;background:rgba(13,38,55,.65);color:#78eaff;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}
+.cyber-tag i{width:6px;height:6px;border-radius:50%;background:#35e58b;box-shadow:0 0 10px #35e58b}
+.security-lines{display:flex;gap:14px;margin-top:22px;color:#5e7891;font-size:10px;letter-spacing:.5px}.security-lines span{display:flex;align-items:center;gap:5px}.security-lines b{color:#36d5f2}
 .secure{margin-top:18px;text-align:center;color:#5f7890;font-size:11px}
 .hidden{display:none}
 main{max-width:1200px;margin:auto;padding:30px;position:relative;z-index:1}
@@ -218,9 +237,9 @@ table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;
   <div class="top-status"><i class="dot"></i> SOC SYSTEM ONLINE</div>
 </header>
 
-<section id="login" class="login-wrap">
+<div class="cyber-bg" aria-hidden="true"><div class="cyber-grid"></div><div class="orb one"></div><div class="orb two"></div><div class="orb three"></div><div class="scanline"></div><i class="particle p1"></i><i class="particle p2"></i><i class="particle p3"></i><i class="particle p4"></i><i class="particle p5"></i></div><section id="login" class="login-wrap">
   <div class="login-card">
-    <div class="kicker">Security Operations Center</div>
+    <div class="cyber-tag"><i></i> Secure SOC Access</div><div class="kicker">Security Operations Center</div>
     <h1>Welcome back</h1>
     <p class="subtitle">Sign in to monitor security events, investigate alerts, and manage incident response.</p>
     <form onsubmit="login(event)">
@@ -243,7 +262,7 @@ table{width:100%;border-collapse:collapse;margin-top:18px}th,td{text-align:left;
       Use the preconfigured local analyst account for portfolio demonstrations.
       <button type="button" onclick="fillDemo()">Use demo credentials</button>
     </div>
-    <div class="secure">🔒 Authenticated access · SOC Sentinel</div>
+    <div class="security-lines"><span>◉ <b>24/7</b> Monitoring</span><span>◉ <b>JWT</b> Protected</span></div><div class="secure">🔒 Authenticated access · SOC Sentinel</div>
   </div>
 </section>
 
