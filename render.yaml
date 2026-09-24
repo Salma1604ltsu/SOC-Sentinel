@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: soc-sentinel
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./soc_sentinel.db
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "120"
+      - key: DEMO_ADMIN_EMAIL
+        value: "analyst@soc.local"
+      - key: DEMO_ADMIN_PASSWORD
+        value: "ChangeMe123!"
